@@ -8,10 +8,10 @@ license = "MIT"
 authors = ["'Loftie <lpellis@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-requests = "^2.22"
+python = "^3.5"
 beautifulsoup4 = "^4.8"
 six = "^1.12"
+requests = "^2.22"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
