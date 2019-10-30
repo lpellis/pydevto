@@ -1,7 +1,11 @@
-README.rst
+README.md
 setup.py
 pydevto/__init__.py
+pydevto/markdown_converter.py
+pydevto/markdownify_license.txt
+pydevto/pydevto.py
 pydevto.egg-info/PKG-INFO
 pydevto.egg-info/SOURCES.txt
 pydevto.egg-info/dependency_links.txt
+pydevto.egg-info/requires.txt
 pydevto.egg-info/top_level.txt
