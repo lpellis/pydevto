@@ -1,0 +1,11 @@
+# files
+.DS_Store
+test.py
+
+# folders
+.idea
+__pycache__
+pytest_cache
+how_long.egg-info
+pip-wheel-metadata
+dist
