@@ -132,7 +132,7 @@ idna = ">=2.5,<2.9"
 urllib3 = ">=1.21.1,<1.25.0 || >1.25.0,<1.25.1 || >1.25.1,<1.26"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
@@ -168,7 +168,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "bb14772e994b149475ec56b651a472e2d855fd811bcd5884862043b19e36cf89"
+content-hash = "d7a23dd3f04e7163bdecb2bc35f2c2c1aa65f816dd7792e7559360ca8fac3073"
 python-versions = "^3.7"
 
 [metadata.hashes]

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pydevto"
-version = "0.1.2"
+version = "0.1.3"
 description = "Unofficial dev.to api for python"
 readme = "README.md"
 repository = "https://github.com/lpellis/pydevto"
@@ -11,6 +11,7 @@ authors = ["'Loftie <lpellis@gmail.com>"]
 python = "^3.7"
 requests = "^2.22"
 beautifulsoup4 = "^4.8"
+six = "^1.12"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
