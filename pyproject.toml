@@ -1,8 +1,11 @@
 [tool.poetry]
 name = "pydevto"
 version = "0.1.0"
-description = ""
-authors = ["'Loftie <'lpellis@gmail.com'>"]
+description = "Unofficial dev.to api for python"
+readme = "README.md"
+repository = "https://github.com/lpellis/pydevto"
+license = "MIT"
+authors = ["'Loftie <lpellis@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
