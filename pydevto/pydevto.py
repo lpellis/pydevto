@@ -1,25 +1,33 @@
 import requests
+from typing import Optional,List
 
 
 class PyDevTo:
-    def __init__(self, api_key=None, timeout=None):
+    def __init__(self, api_key:Optional[str]=None, timeout:Optional[float]=None):
         """
 
-        :param api_key:  Your dev.to api key (https://dev.to/settings/account)
-        :param timeout: Timeout period for http requests
+        Args:
+          api_key: Your dev.to api key (https://dev.to/settings/account)
+          timeout: Timeout period for http requests
+
+        Returns:
+
         """
         self.api_key = api_key
         self.timeout = timeout
 
-    def public_articles(self, page=None, tag=None, username=None, state=None, top=None):
+    def public_articles(self, page:Optional[int]=None, tag:Optional[str]=None, username:Optional[str]=None, state:Optional[str]=None, top:Optional[int]=None):
         """Return a list of public (published) articles
 
-        :param page: pagination page
-        :param tag: articles that contain the requested tag.
-        :param username: articles belonging to a User or Organization ordered by descending published_at
-        :param state: "fresh" or "rising".  check which articles are fresh or rising.
-        :param top: (int) most popular articles in the last N days
-        :return:
+        Args:
+          page: pagination page (Default value = None)
+          tag: articles that contain the requested tag. (Default value = None)
+          username: articles belonging to a User or Organization ordered by descending published_at (Default value = None)
+          state: fresh" or "rising".  check which articles are fresh or rising. (Default value = None)
+          top: int) most popular articles in the last N days (Default value = None)
+
+        Returns:
+
         """
         return requests.get(
             "https://dev.to/api/articles",
@@ -32,23 +40,31 @@ class PyDevTo:
             },
         ).json()
 
-    def public_article(self, id):
+    def public_article(self, id:int):
         """Return a single public (published) article given its id
 
-        :param id: id of the article
-        :return: article
+        Args:
+          id: id of the article
+
+        Returns:
+          article
+
         """
         return requests.get(
             "https://dev.to/api/articles/{id}".format(id=id), timeout=self.timeout
         ).json()
 
-    def articles(self, page=None, per_page=None, state="published"):
+    def articles(self, page:Optional[int]=None, per_page:Optional[int]=None, state:str="published"):
         """Return a list of user articles
 
-        :param page: pagination page
-        :param per_page: page size
-        :param state: "published", "unpublished" or "all
-        :return: list of articles
+        Args:
+          page: pagination page (Default value = None)
+          per_page: page size (Default value = None)
+          state: published", "unpublished" or "all (Default value = "published")
+
+        Returns:
+          list of articles
+
         """
         url = "https://dev.to/api/articles/me"
         if state == "published":
@@ -67,28 +83,34 @@ class PyDevTo:
 
     def create_article(
         self,
-        title,
-        body_markdown="",  # must default to empty string instead of None otherwise dev.to raises error on edit
-        published=None,
-        series=None,
-        main_image=None,
-        canonical_url=None,
-        description=None,
-        tags=None,
-        organization_id=None,
+        title:str,
+        # must default to empty string instead of None otherwise dev.to raises error on edit
+        body_markdown:str="",
+        published:Optional[bool]=None,
+        series:str=None,
+        main_image:str=None,
+        canonical_url:str=None,
+        description:str=None,
+        tags:Optional[List[str]]=None,
+        organization_id:Optional[int]=None,
     ):
         """Create an article
 
-        :param title: Title
-        :param body_markdown: Article Markdown content
-        :param published: True to create published article, false otherwise
-        :param series: Article series name
-        :param main_image: Main image (or cover image)
-        :param canonical_url: Canonical Url
-        :param description: Article Description
-        :param tags: List of article tags
-        :param organization_id: Organization id
-        :return: newly created article
+        Args:
+          title: Title
+          body_markdown: Article Markdown content (Default value = "")
+          published: True to create published article, false otherwise
+          series: Article series name (Default value = None)
+          main_image: Main image (or cover image) (Default value = None)
+          canonical_url: Canonical Url (Default value = None)
+          description: Article Description (Default value = None)
+          tags: List of article tags (Default value = None)
+          organization_id: Organization id (Default value = None)
+          # must default to empty string instead of None otherwise dev.to raises error on editpublished:  (Default value = None)
+
+        Returns:
+          newly created article
+
         """
         url = "https://dev.to/api/articles"
 
@@ -112,30 +134,35 @@ class PyDevTo:
 
     def update_article(
         self,
-        id,
-        title=None,
-        body_markdown=None,
-        published=None,
-        series=None,
-        main_image=None,
-        canonical_url=None,
-        description=None,
-        tags=None,
-        organization_id=None,
+        id:int,
+        title:Optional[str]=None,
+        body_markdown:Optional
+        [str]=None,
+        published:Optional[bool]=None,
+        series:Optional[str]=None,
+        main_image:Optional[str]=None,
+        canonical_url:Optional[str]=None,
+        description:Optional[str]=None,
+        tags:Optional[List[str]]=None,
+        organization_id:Optional[int]=None,
     ):
         """Update an article
 
-        :param id: id of article to update
-        :param title: Title
-        :param body_markdown: Article Markdown content
-        :param published: True to create published article, false otherwise
-        :param series: Article series name
-        :param main_image: Main image (or cover image)
-        :param canonical_url: Canonical Url
-        :param description: Article Description
-        :param tags: List of article tags
-        :param organization_id: Organization id
-        :return: updated article
+        Args:
+          id: id of article to update
+          title: Title (Default value = None)
+          body_markdown: Article Markdown content (Default value = None)
+          published: True to create published article, false otherwise (Default value = None)
+          series: Article series name (Default value = None)
+          main_image: Main image (or cover image) (Default value = None)
+          canonical_url: Canonical Url (Default value = None)
+          description: Article Description (Default value = None)
+          tags: List of article tags (Default value = None)
+          organization_id: Organization id (Default value = None)
+
+        Returns:
+          updated article
+
         """
         url = "https://dev.to/api/articles/{id}".format(id=id)
 
@@ -157,14 +184,18 @@ class PyDevTo:
             url, json=data, headers={"api-key": self.api_key}, timeout=self.timeout
         ).json()
 
-    def user(self, id=None, username=None):
+    def user(self, id:Optional[int]=None, username:Optional[str]=None):
         """Return user information
 
         If both id and username is None then information for user with the api_key (me) is returned
 
-        :param id: (optional) id of user
-        :param username: (optional) username of user
-        :return: user object
+        Args:
+          id: optional) id of user (Default value = None)
+          username: optional) username of user (Default value = None)
+
+        Returns:
+          user object
+
         """
         url = "https://dev.to/api/users/me"
         if id:
@@ -182,8 +213,12 @@ class PyDevTo:
     def follow_suggestions(self, page=None):
         """Return list of follow suggestions
 
-        :param page: pagination page
-        :return: list of follow suggestions
+        Args:
+          page: pagination page (Default value = None)
+
+        Returns:
+          list of follow suggestions
+
         """
         return requests.get(
             "https://dev.to/api/users/?state=follow_suggestions",
@@ -195,8 +230,11 @@ class PyDevTo:
     def tags(self, page=None):
         """Return list of tags
 
-        :param page: pagination page
-        :return:
+        Args:
+          page: pagination page (Default value = None)
+
+        Returns:
+
         """
         return requests.get(
             "https://dev.to/api/tags",
@@ -206,9 +244,13 @@ class PyDevTo:
         ).json()
 
     def webhooks(self):
-        """Return list of webhooks
+        """
 
-        :return: list of webhooks
+        Args:
+
+        Returns:
+          :return: list of webhooks
+
         """
         return requests.get(
             "https://dev.to/api/webhooks",
@@ -216,11 +258,15 @@ class PyDevTo:
             timeout=self.timeout,
         ).json()
 
-    def webhook(self, id):
+    def webhook(self, id:int):
         """Return single webhook with id
 
-        :param id: id of webhook
-        :return: webhook object
+        Args:
+          id: id of webhook
+
+        Returns:
+          webhook object
+
         """
         return requests.get(
             "https://dev.to/api/webhooks/{id}".format(id=id),
@@ -228,13 +274,16 @@ class PyDevTo:
             timeout=self.timeout,
         ).json()
 
-    def create_webhook(self, source, target_url, events):
+    def create_webhook(self, source:str, target_url:str, events:List[str]):
         """Create a new webhook
 
-        :param source: The name of the requester, eg. "DEV"
-        :param target_url: Target Url
-        :param events: List of event identifiers
-        :return:
+        Args:
+          source: The name of the requester, eg. "DEV"
+          target_url: Target Url
+          events: List of event identifiers
+
+        Returns:
+
         """
         return requests.post(
             "https://dev.to/api/webhooks",
@@ -243,11 +292,14 @@ class PyDevTo:
             timeout=self.timeout,
         ).json()
 
-    def delete_webhook(self, id):
+    def delete_webhook(self, id:int):
         """Delete  a webhook with id
 
-        :param id: id of webhook
-        :return:
+        Args:
+          id: id of webhook
+
+        Returns:
+
         """
         return requests.delete(
             "https://dev.to/api/webhooks/{id}".format(id=id),

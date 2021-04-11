@@ -20,21 +20,42 @@ SETEXT = UNDERLINED
 
 
 def escape(text):
+    """
+
+    Args:
+      text: 
+
+    Returns:
+
+    """
     if not text:
         return ""
     return text.replace("_", r"\_")
 
 
 def _todict(obj):
+    """
+
+    Args:
+      obj: 
+
+    Returns:
+
+    """
     return dict((k, getattr(obj, k)) for k in dir(obj) if not k.startswith("_"))
 
 
 class MarkdownConverter(object):
-    """
-    This class is based on on markdownify (https://github.com/matthewwithanm/python-markdownify) but extended to
+    """This class is based on on markdownify (https://github.com/matthewwithanm/python-markdownify) but extended to
     handle dev.to specific markdown and embeds
+
+    Args:
+
+    Returns:
+
     """
     class DefaultOptions:
+        """ """
         strip = None
         convert = None
         autolinks = True
@@ -42,6 +63,7 @@ class MarkdownConverter(object):
         bullets = "*+-"  # An iterable of bullet types.
 
     class Options(DefaultOptions):
+        """ """
         pass
 
     def __init__(self, **options):
@@ -57,6 +79,14 @@ class MarkdownConverter(object):
             )
 
     def convert(self, html):
+        """
+
+        Args:
+          html: 
+
+        Returns:
+
+        """
         # We want to take advantage of the html5 parsing, but we don't actually
         # want a full document. Therefore, we'll mark our fragment with an id,
         # create the document, and extract the element with the id.
@@ -65,6 +95,15 @@ class MarkdownConverter(object):
         return self.process_tag(soup.find(id=FRAGMENT_ID), children_only=True)
 
     def process_tag(self, node, children_only=False):
+        """
+
+        Args:
+          node: 
+          children_only:  (Default value = False)
+
+        Returns:
+
+        """
         text = ""
 
         # Convert the children first
@@ -84,6 +123,14 @@ class MarkdownConverter(object):
         return text
 
     def process_text(self, text):
+        """
+
+        Args:
+          text: 
+
+        Returns:
+
+        """
         return escape(whitespace_re.sub(" ", text or ""))
 
     def __getattr__(self, attr):
@@ -93,6 +140,15 @@ class MarkdownConverter(object):
             n = int(m.group(1))
 
             def convert_tag(el, text):
+                """
+
+                Args:
+                  el: 
+                  text: 
+
+                Returns:
+
+                """
                 return self.convert_hn(n, el, text)
 
             convert_tag.__name__ = "convert_h%s" % n
@@ -102,6 +158,14 @@ class MarkdownConverter(object):
         raise AttributeError(attr)
 
     def should_convert_tag(self, tag):
+        """
+
+        Args:
+          tag: 
+
+        Returns:
+
+        """
         tag = tag.lower()
         strip = self.options["strip"]
         convert = self.options["convert"]
@@ -113,13 +177,40 @@ class MarkdownConverter(object):
             return True
 
     def indent(self, text, level):
+        """
+
+        Args:
+          text: 
+          level: 
+
+        Returns:
+
+        """
         return line_beginning_re.sub("\t" * level, text) if text else ""
 
     def underline(self, text, pad_char):
+        """
+
+        Args:
+          text: 
+          pad_char: 
+
+        Returns:
+
+        """
         text = (text or "").rstrip()
         return "%s\n%s\n\n" % (text, pad_char * len(text)) if text else ""
 
     def convert_a(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         href = el.get("href")
         title = el.get("title")
         if self.options["autolinks"] and text == href and not title:
@@ -129,12 +220,39 @@ class MarkdownConverter(object):
         return "[%s](%s%s)" % (text or "", href, title_part) if href else text or ""
 
     def convert_b(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         return self.convert_strong(el, text)
 
     def convert_figcaption(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         return "\n<figcaption>" + text + "</figcaption>\n"
 
     def convert_blockquote(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
 
         # handle twitter embeds
         if el.get("class") and el.get("class")[0] == "twitter-tweet":
@@ -145,9 +263,26 @@ class MarkdownConverter(object):
         return "\n" + line_beginning_re.sub("> ", text) if text else ""
 
     def convert_br(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         return "  \n"
 
     def remove_scheme(self, url):
+        """
+
+        Args:
+          url: 
+
+        Returns:
+
+        """
         return (
             url.replace("https://www.", "//")
             .replace("https://", "//")
@@ -156,6 +291,15 @@ class MarkdownConverter(object):
         )
 
     def convert_iframe(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         src = self.remove_scheme(el.attrs.get("src"))
         if src.startswith("//cdn.unfurl.dev/embed?"):
             src = urlparse.unquote(src)
@@ -176,6 +320,14 @@ class MarkdownConverter(object):
         return self.pydevto_embed(el.attrs.get("src"))
 
     def pydevto_embed(self, url):
+        """
+
+        Args:
+          url: 
+
+        Returns:
+
+        """
         original_url = url
         url = self.remove_scheme(url)
 
@@ -212,9 +364,28 @@ class MarkdownConverter(object):
         return "\n" + original_url + "\n"
 
     def convert_em(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         return "*%s*" % text if text else ""
 
     def convert_hn(self, n, el, text):
+        """
+
+        Args:
+          n: 
+          el: 
+          text: 
+
+        Returns:
+
+        """
         style = self.options["heading_style"]
         text = text.rstrip()
         if style == UNDERLINED and n <= 2:
@@ -226,9 +397,27 @@ class MarkdownConverter(object):
         return "%s %s\n\n" % (hashes, text)
 
     def convert_i(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         return self.convert_em(el, text)
 
     def convert_list(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         nested = False
         while el:
             if el.name == "li":
@@ -243,6 +432,15 @@ class MarkdownConverter(object):
     convert_ol = convert_list
 
     def convert_li(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         parent = el.parent
         if parent is not None and parent.name == "ol":
             bullet = "%s." % (parent.index(el) + 1)
@@ -257,12 +455,39 @@ class MarkdownConverter(object):
         return "%s %s\n" % (bullet, text or "")
 
     def convert_p(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         return "%s\n\n" % text if text else ""
 
     def convert_strong(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         return "**%s**" % text if text else ""
 
     def convert_img(self, el, text):
+        """
+
+        Args:
+          el: 
+          text: 
+
+        Returns:
+
+        """
         alt = el.attrs.get("alt", None) or ""
         src = el.attrs.get("src", None) or ""
         title = el.attrs.get("title", None) or ""
@@ -271,5 +496,13 @@ class MarkdownConverter(object):
 
 
 def html_to_markdown(html):
+    """
+
+    Args:
+      html: 
+
+    Returns:
+
+    """
     html = html.replace("<hr>", "<p>---</p>")
     return MarkdownConverter(heading_style="atx").convert(html)
